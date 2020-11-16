@@ -11,12 +11,12 @@ function painting()
     if (paintingProgress < 150 && pieceFinished === false)
     {
         paintingProgress++;
-        tagman.anims.play('paint', true);
+        tagman.anims.play('tagman-paint', true);
     }
 
     if (paintingProgress === 150 )
     {
-        tagman.anims.play('idle', true);
+        tagman.anims.play('tagman-idle', true);
         this.putPiece(8, 11);
         pieceFinished = true;
         tagmanIsPainting = false;

@@ -31,7 +31,7 @@ function tagmanControls()
     // checking
     if ( tagmanIsChecking === true && controls.up.isDown)
     {
-        tagman.anims.play('check', true);
+        tagman.anims.play('tagman-check', true);
         return;
     }
     else
@@ -42,11 +42,11 @@ function tagmanControls()
     // set idle or walk animation
     if (allControlsUp() === true)
     {
-        tagman.anims.play('idle', true);
+        tagman.anims.play('tagman-idle', true);
     }
     else
     {
-        tagman.anims.play('walk', true);
+        tagman.anims.play('tagman-walk', true);
     }
 
     // walking around

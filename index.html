@@ -37,6 +37,8 @@
     };
 
     var game = new Phaser.Game(config);
+    var tagman;
+    var officers;
 
     function preload ()
     {
@@ -44,6 +46,7 @@
         this.load.image('background', 'assets/background.png');
         this.load.spritesheet('tagman', 'assets/tagman.png', { frameWidth: 100, frameHeight: 150 });
         this.load.spritesheet('piece', 'assets/pieces.png', { frameWidth: 100, frameHeight: 150 });
+        this.load.spritesheet('officer', 'assets/officer.png', { frameWidth: 100, frameHeight: 150 });
 
         // get canvas boundaries
         this.canvas = this.sys.game.canvas;
@@ -64,33 +67,43 @@
         // player
         tagman = this.physics.add.sprite(200, 500, 'tagman').setScale(2);
 
+        // officer
+        officers = this.add.group();
+
         // controls
         controls = this.input.keyboard.createCursorKeys();
 
         // animations
         this.anims.create({
-            key: 'idle',
+            key: 'tagman-idle',
             frames: [ { key: 'tagman', frame: 0 } ]
         });
 
         this.anims.create({
-            key: 'walk',
+            key: 'tagman-walk',
             frames: this.anims.generateFrameNumbers('tagman', { start: 1, end: 7 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'check',
+            key: 'tagman-check',
             frames: this.anims.generateFrameNumbers('tagman', { start: 8, end: 9 }),
             frameRate: 1,
             repeat: -1
         });
 
         this.anims.create({
-            key: 'paint',
+            key: 'tagman-paint',
             frames: this.anims.generateFrameNumbers('tagman', { start: 10, end: 12 }),
             frameRate: 6,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'officer-walk',
+            frames: this.anims.generateFrameNumbers('officer', { start: 1, end: 7 }),
+            frameRate: 10,
             repeat: -1
         });
 
