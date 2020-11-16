@@ -1,8 +1,4 @@
 var controls;
-var tagmanIsChecking = false;
-var tagmanIsPainting = false;
-var paintingProgress = 0;
-var pieceFinished = false;
 
 function tagmanControls()
 {
@@ -96,90 +92,4 @@ function allControlsUp()
     }
 
     return allControlsUp;
-}
-
-function isMaxLeft()
-{
-    var isMaxLeft = false;
-
-    if(tagman.getBounds().x + tagman.body.halfWidth < 0)
-    {
-        isMaxLeft = true;
-    }
-
-    return isMaxLeft;
-}
-
-function isMaxRight()
-{
-    var isMaxRight = false;
-
-    if(tagman.getBounds().x + tagman.body.halfWidth > 1200)
-    {
-        isMaxRight = true;
-    }
-
-    return isMaxRight;
-}
-
-function onBottomGround()
-{
-    var onBottomGround = true;
-
-    if(tagman.y + tagman.body.halfHeight < groundZone.body.y + groundZone.height)
-    {
-        onBottomGround = false;
-    }
-
-    return onBottomGround;
-}
-
-function onTopGround()
-{
-    var onTopGround = false;
-
-    if(tagman.y + tagman.body.halfHeight <= groundZone.body.y)
-    {
-        onTopGround = true;
-        tagmanIsChecking = true;
-    }
-
-    return onTopGround;
-}
-
-function painting()
-{
-    if (paintingProgress < 150 && pieceFinished === false)
-    {
-        paintingProgress++;
-        tagman.anims.play('paint', true);
-    }
-
-    if (paintingProgress === 150 )
-    {
-        tagman.anims.play('idle', true);
-        this.putPiece(8, 11);
-        pieceFinished = true;
-        tagmanIsPainting = false;
-        paintingProgress = 0;
-        this.updateScore(10);
-    }
-}
-
-function putPiece(min, max)
-{
-    pieces.create(tagman.x, tagman.y - 30, 'piece', this.getRandomInt(min, max)).setScale(2);
-    tagman.setDepth(1);
-}
-
-function updateScore(points)
-{
-    score += points;
-    scoreText.setText('Score: ' + score);
-}
-
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }

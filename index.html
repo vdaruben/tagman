@@ -5,6 +5,10 @@
     <title>tagman</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
     <script src="js/controls.js"></script>
+    <script src="js/graffiti.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/bounds.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -33,11 +37,6 @@
     };
 
     var game = new Phaser.Game(config);
-    var groundZone;
-    var score = 0;
-    var scoreText;
-    var paintingProgressBar;
-    var pieces;
 
     function preload ()
     {
@@ -106,36 +105,6 @@
     {
         tagmanControls();
         updatePaintingProgressionBar(this.add.graphics());
-    }
-
-    function updatePaintingProgressionBar(addGraphics)
-    {
-        if(typeof paintingProgressBar != "undefined") {
-            paintingProgressBar.destroy();
-        }
-
-        if(tagmanIsPainting === true && pieceFinished === false) {
-            paintingProgressBar = addGraphics;
-            let right = tagman.x - 76;
-            let top = tagman.y - 175;
-
-            // base of healthbar
-            paintingProgressBar.fillStyle(0x000000);
-            paintingProgressBar.fillRect(right, top, 160, 30);
-            paintingProgressBar.fillStyle(0x7E7E7E);
-            paintingProgressBar.fillRect(right + 5, top + 5, 150, 20);
-
-            // fill of healthbar
-            paintingProgressBar.fillStyle(0xFF0000);
-            if(paintingProgress >= 30) {
-                paintingProgressBar.fillStyle(0xFF9E00);
-            }
-            if(paintingProgress >= 80) {
-                paintingProgressBar.fillStyle(0xffff33);
-            }
-
-            paintingProgressBar.fillRect(right + 5, top + 5, paintingProgress, 20);
-        }
     }
 
 </script>
