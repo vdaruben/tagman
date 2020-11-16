@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>tagman</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script src="js/controls.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+    var config = {
+        type: Phaser.AUTO,
+        width: 1200,
+        height: 800,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                debug: false
+            }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var game = new Phaser.Game(config);
+    var groundZone;
+    var score = 0;
+    var scoreText;
+    var paintingProgressBar;
+    var pieces;
+
+    function preload ()
+    {
+        // load images and sprites
+        this.load.image('background', 'assets/background.png');
+        this.load.spritesheet('tagman', 'assets/tagman.png', { frameWidth: 100, frameHeight: 150 });
+        this.load.spritesheet('piece', 'assets/pieces.png', { frameWidth: 100, frameHeight: 150 });
+
+        // get canvas boundaries
+        this.canvas = this.sys.game.canvas;
+        this.canvasRect = this.canvas.getBoundingClientRect();
+        //console.log(this.canvasRect);
+    }
+
+    function create ()
+    {
+        // background and zones
+        this.add.image(0, 0, 'background').setOrigin(0).setScale(2);
+
+        groundZone = this.add.zone(0, 550).setSize(1200, 190);
+        this.physics.world.enable(groundZone);
+        groundZone.body.moves = false;
+        groundZone.body.debugBodyColor = '0x00ffff';
+
+        // player
+        tagman = this.physics.add.sprite(200, 500, 'tagman').setScale(2);
+
+        // controls
+        controls = this.input.keyboard.createCursorKeys();
+
+        // animations
+        this.anims.create({
+            key: 'idle',
+            frames: [ { key: 'tagman', frame: 0 } ]
+        });
+
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('tagman', { start: 1, end: 7 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'check',
+            frames: this.anims.generateFrameNumbers('tagman', { start: 8, end: 9 }),
+            frameRate: 1,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'paint',
+            frames: this.anims.generateFrameNumbers('tagman', { start: 10, end: 12 }),
+            frameRate: 6,
+            repeat: -1
+        });
+
+        // score
+        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+        // pieces object
+        pieces = this.add.group();
+    }
+
+    function update ()
+    {
+        tagmanControls();
+        updatePaintingProgressionBar(this.add.graphics());
+    }
+
+    function updatePaintingProgressionBar(addGraphics)
+    {
+        if(typeof paintingProgressBar != "undefined") {
+            paintingProgressBar.destroy();
+        }
+
+        if(tagmanIsPainting === true && pieceFinished === false) {
+            paintingProgressBar = addGraphics;
+            let right = tagman.x - 76;
+            let top = tagman.y - 175;
+
+            // base of healthbar
+            paintingProgressBar.fillStyle(0x000000);
+            paintingProgressBar.fillRect(right, top, 160, 30);
+            paintingProgressBar.fillStyle(0x7E7E7E);
+            paintingProgressBar.fillRect(right + 5, top + 5, 150, 20);
+
+            // fill of healthbar
+            paintingProgressBar.fillStyle(0xFF0000);
+            if(paintingProgress >= 30) {
+                paintingProgressBar.fillStyle(0xFF9E00);
+            }
+            if(paintingProgress >= 80) {
+                paintingProgressBar.fillStyle(0xffff33);
+            }
+
+            paintingProgressBar.fillRect(right + 5, top + 5, paintingProgress, 20);
+        }
+    }
+
+</script>
+
+</body>
+</html>
