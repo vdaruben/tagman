@@ -131,16 +131,38 @@
     function spawnOfficer()
     {
         var spawnBottom = getRandomInt(550, 550 + 190);
-        var spawnLeft = -200;
         var spawnTop = spawnBottom - 150;
+
+        var spawnLeft = '';
+        var horizontalSpawnLocation = getRandomInt(0,1);
+        switch(horizontalSpawnLocation) {
+            case 0:
+                spawnLeft = -200;
+                break;
+            case 1:
+                spawnLeft = 1200 + 200;
+                break;
+        }
+
         officers.create(spawnLeft, spawnTop, 'officer').setScale(2);
 
         var children = officers.getChildren();
-        for(var i=0; i<children.length; i++) {
-            children[i].anims.play('officer-walk', true);
-            children[i].setVelocityX(200);
-            children[i].flipX=false;
+        var lastSpawnedOfficer = children[children.length - 1];
+        lastSpawnedOfficer.anims.play('officer-walk', true);
+
+        switch(horizontalSpawnLocation) {
+            case 0:
+                lastSpawnedOfficer.setVelocityX(200);
+
+                lastSpawnedOfficer.flipX=false;
+                break;
+            case 1:
+                lastSpawnedOfficer.setVelocityX(-200);
+                lastSpawnedOfficer.flipX=true;
+                break;
         }
+
+
     }
 
 </script>
