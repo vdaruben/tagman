@@ -113,23 +113,34 @@
         // officer
         officers = this.physics.add.group();
 
-        // officer testing
-        var spawnLeft = -200;
-        var spawnTop = 550;
-        officers.create(spawnLeft, spawnTop, 'officer').setScale(2);
-
+        var timer = this.time.addEvent({
+            delay: 3000, // MS
+            callback: spawnOfficer,
+            //args: [],
+            //callbackScope: thisArg,
+            loop: true
+        });
     }
 
     function update ()
     {
         tagmanControls();
         updatePaintingProgressionBar(this.add.graphics());
+    }
 
-        // officer test
+    function spawnOfficer()
+    {
+        var spawnBottom = getRandomInt(550, 550 + 190);
+        var spawnLeft = -200;
+        var spawnTop = spawnBottom - 150;
+        officers.create(spawnLeft, spawnTop, 'officer').setScale(2);
+
         var children = officers.getChildren();
-        children[0].anims.play('officer-walk', true);
-        children[0].setVelocityX(200);
-        children[0].flipX=false;
+        for(var i=0; i<children.length; i++) {
+            children[i].anims.play('officer-walk', true);
+            children[i].setVelocityX(200);
+            children[i].flipX=false;
+        }
     }
 
 </script>
