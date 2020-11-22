@@ -120,6 +120,9 @@
             //callbackScope: thisArg,
             loop: true
         });
+
+        // collion tagman and cops
+        this.physics.add.overlap(tagman, officersGroup, setCharactersOverlaps, null, this);
     }
 
     function update ()
@@ -127,6 +130,18 @@
         tagmanControls();
         updateOfficers();
         updatePaintingProgressionBar(this.add.graphics());
+
+    }
+
+    function setCharactersOverlaps(tagman, officer)
+    {
+        if(tagman.y >= officer.y) {
+            tagman.setDepth(1);
+            officer.setDepth(0);
+        } else {
+            tagman.setDepth(0);
+            officer.setDepth(1);
+        }
 
     }
 

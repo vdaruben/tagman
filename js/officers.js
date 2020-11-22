@@ -1,4 +1,4 @@
-var officers;
+var officersGroup;
 var isFighting = false
 
 function spawnOfficer()
