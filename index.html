@@ -9,6 +9,7 @@
     <script src="js/helpers.js"></script>
     <script src="js/score.js"></script>
     <script src="js/bounds.js"></script>
+    <script src="js/officers.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -37,8 +38,8 @@
     };
 
     var game = new Phaser.Game(config);
+    var canvasRect = null;
     var tagman;
-    var officers;
 
     function preload ()
     {
@@ -50,8 +51,7 @@
 
         // get canvas boundaries
         this.canvas = this.sys.game.canvas;
-        this.canvasRect = this.canvas.getBoundingClientRect();
-        //console.log(this.canvasRect);
+        canvasRect = this.canvas.getBoundingClientRect();
     }
 
     function create ()
@@ -59,7 +59,7 @@
         // background and zones
         this.add.image(0, 0, 'background').setOrigin(0).setScale(2);
 
-        groundZone = this.add.zone(0, 550).setSize(1200, 190);
+        groundZone = this.add.zone(0, 550).setSize(canvasRect.width, 190);
         this.physics.world.enable(groundZone);
         groundZone.body.moves = false;
         groundZone.body.debugBodyColor = '0x00ffff';
@@ -111,7 +111,7 @@
         pieces = this.add.group();
 
         // officer
-        officers = this.physics.add.group();
+        officersGroup = this.physics.add.group();
 
         var timer = this.time.addEvent({
             delay: 3000, // MS
@@ -125,43 +125,8 @@
     function update ()
     {
         tagmanControls();
+        updateOfficers();
         updatePaintingProgressionBar(this.add.graphics());
-    }
-
-    function spawnOfficer()
-    {
-        var spawnBottom = getRandomInt(550, 550 + 190);
-        var spawnTop = spawnBottom - 150;
-
-        var spawnLeft = '';
-        var horizontalSpawnLocation = getRandomInt(0,1);
-        switch(horizontalSpawnLocation) {
-            case 0:
-                spawnLeft = -200;
-                break;
-            case 1:
-                spawnLeft = 1200 + 200;
-                break;
-        }
-
-        officers.create(spawnLeft, spawnTop, 'officer').setScale(2);
-
-        var children = officers.getChildren();
-        var lastSpawnedOfficer = children[children.length - 1];
-        lastSpawnedOfficer.anims.play('officer-walk', true);
-
-        switch(horizontalSpawnLocation) {
-            case 0:
-                lastSpawnedOfficer.setVelocityX(200);
-
-                lastSpawnedOfficer.flipX=false;
-                break;
-            case 1:
-                lastSpawnedOfficer.setVelocityX(-200);
-                lastSpawnedOfficer.flipX=true;
-                break;
-        }
-
 
     }
 
