@@ -1,5 +1,6 @@
 var officersGroup;
 var isFighting = false
+var exclamationMarksGroup;
 
 function spawnOfficer()
 {
@@ -34,6 +35,8 @@ function spawnOfficer()
             lastSpawnedOfficer.flipX=true;
             break;
     }
+
+    spawnexclamationMark(horizontalSpawnLocation, spawnTop);
 }
 
 function updateOfficers()
@@ -52,4 +55,20 @@ function removeOutOfBoundsOfficers(officers)
             }
         }
     }
+}
+
+function spawnexclamationMark(horizontalSpawnLocation, officerTop)
+{
+    var spawnTop = officerTop - 40;
+    var spawnLeft = 20;
+
+    if(horizontalSpawnLocation === 1) {
+        spawnLeft = canvasRect.width - 100;
+    }
+
+    var exclamationMark = exclamationMarksGroup.create(spawnLeft, spawnTop, 'exclamationMark').setOrigin(0);
+    console.log(exclamationMark);
+
+    // animate mark
+    //exclamationMark.anims.play('exclamationMark-blink', true);
 }

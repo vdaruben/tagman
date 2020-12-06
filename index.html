@@ -48,6 +48,7 @@
         this.load.spritesheet('tagman', 'assets/tagman.png', { frameWidth: 100, frameHeight: 150 });
         this.load.spritesheet('piece', 'assets/pieces.png', { frameWidth: 100, frameHeight: 150 });
         this.load.spritesheet('officer', 'assets/officer.png', { frameWidth: 100, frameHeight: 150 });
+        this.load.spritesheet('exclamationMark', 'assets/exclamation_mark.png', { frameWidth: 80, frameHeight: 120 });
 
         // get canvas boundaries
         this.canvas = this.sys.game.canvas;
@@ -69,6 +70,29 @@
 
         // controls
         controls = this.input.keyboard.createCursorKeys();
+
+        // score
+        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+        // pieces object
+        pieces = this.add.group();
+
+        // officer
+        officersGroup = this.physics.add.group();
+
+        var timer = this.time.addEvent({
+            delay: 3000, // MS
+            callback: spawnOfficer,
+            //args: [],
+            //callbackScope: thisArg,
+            loop: true
+        });
+
+        // collion tagman and cops
+        this.physics.add.overlap(tagman, officersGroup, setCharactersOverlaps, null, this);
+
+        // exclamation mark
+        exclamationMarksGroup = this.add.group();
 
         // animations
         this.anims.create({
@@ -104,25 +128,12 @@
             repeat: -1
         });
 
-        // score
-        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-
-        // pieces object
-        pieces = this.add.group();
-
-        // officer
-        officersGroup = this.physics.add.group();
-
-        var timer = this.time.addEvent({
-            delay: 3000, // MS
-            callback: spawnOfficer,
-            //args: [],
-            //callbackScope: thisArg,
-            loop: true
+        this.anims.create({
+            key: 'exclamationMark-blink',
+            frames: this.anims.generateFrameNumbers('exclamationMark', { start: 1, end: 2 }),
+            frameRate: 5,
+            repeat: -1
         });
-
-        // collion tagman and cops
-        this.physics.add.overlap(tagman, officersGroup, setCharactersOverlaps, null, this);
     }
 
     function update ()
